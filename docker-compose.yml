@@ -222,6 +222,36 @@ services:
       timeout: 5s
       retries: 3
 
+  # ── Backrest — restic backup to Hetzner Storage Box ─────────────────────────
+  # Separate SSH key + separate repo path (/music-potato) from potatostack.
+  # Config + SSH keys live on /mnt/cachehdd (persisted HDD, not in git).
+  # Web UI exposed on Tailscale only: http://music-potato:9898
+  backrest:
+    image: garethgeorge/backrest:latest
+    container_name: backrest-music-potato
+    hostname: music-potato
+    <<: *restart
+    network_mode: host
+    volumes:
+      - /mnt/cachehdd/backrest/config:/config
+      - /mnt/cachehdd/backrest/data:/data
+      - /mnt/cachehdd/backrest/ssh:/root/.ssh
+      # Backup sources (read-only mounts)
+      - /home/daniel/music-potato:/mnt/backup/home:ro
+      - /etc:/mnt/backup/etc:ro
+      - /var/lib/tailscale:/mnt/backup/tailscale:ro
+      # Docker named volumes (for MPD db, Tailscale state)
+      - mpd-db:/mnt/backup/docker-volumes/mpd-db:ro
+      - tailscale-state:/mnt/backup/docker-volumes/tailscale-state:ro
+    environment:
+      BACKREST_DATA: /data
+      BACKREST_CONFIG: /config/config.json
+      TZ: ${TZ:-Europe/Berlin}
+    entrypoint:
+      - sh
+      - -c
+      - "umask 0077; chmod 700 /root/.ssh 2>/dev/null; chmod 600 /root/.ssh/id_ed25519 /root/.ssh/config 2>/dev/null; exec /backrest"
+
   # ── Watchtower — automatic image updates ─────────────────────────────────────
   # NOTE: containrrr/watchtower:latest uses Docker API v1.25 which is below the
   # minimum v1.44 required by Docker Engine 29.x. Disabled until watchtower

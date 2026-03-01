@@ -596,11 +596,11 @@ ok "music-potato.service enabled — starts on every boot"
 
 log "Pulling Docker images (first run: a few minutes)..."
 cd "${SCRIPT_DIR}"
-docker compose pull --quiet
+docker compose pull --ignore-pull-failures --quiet || true
 ok "Images pulled"
 
-log "Starting Docker Compose stack..."
-docker compose up -d
+log "Building and starting Docker Compose stack..."
+docker compose up -d --build
 ok "Stack started"
 
 # ─── Phase 13: Verify ─────────────────────────────────────────────────────────

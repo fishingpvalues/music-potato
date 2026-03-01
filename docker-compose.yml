@@ -135,7 +135,9 @@ services:
   # NOTE: Spotify = OGG Vorbis 320kbps always. Inherently lossy.
   # For lossless Spotify: use SpotiFLAC downloads on homelab → play via MPD.
   spotifyd:
-    image: ghcr.io/spotifyd/spotifyd:latest   # multi-arch: amd64, arm64, armhf
+    build:
+      context: .
+      dockerfile: Dockerfile.spotifyd   # ghcr.io/spotifyd/spotifyd requires auth; build locally from release binary
     container_name: spotifyd
     network_mode: host
     <<: [*audio, *restart]

@@ -346,7 +346,7 @@ ping -c1 -W2 "${HOMELAB_IP}" &>/dev/null \
 # ─── Phase 7: Bluetooth ───────────────────────────────────────────────────────
 log "Checking Bluetooth..."
 systemctl enable bluetooth
-systemctl start bluetooth
+systemctl start bluetooth || true  # may be skipped if no BT hardware yet (/sys/class/bluetooth absent)
 
 BT_IFACE=""
 for i in $(seq 1 10); do
@@ -422,7 +422,7 @@ Pairable=true
 FastConnectable=true
 EOF
 systemctl enable bluetooth
-systemctl restart bluetooth
+systemctl restart bluetooth || true
 ok "Bluetooth: A2DP sink, always discoverable as '${DEVICE_NAME}'"
 
 # ALSA — unmute card 0, configure default device

@@ -160,6 +160,17 @@ apt-get install -y -qq \
   nfs-common
 ok "Packages installed"
 
+# ─── Phase 1.6: Armbian BTF strip (early — needed before module loading) ────────
+# The meson64 kernel has a BTF validation bug affecting net, bt, crypto, lib
+# modules. Strip the .BTF ELF section early so Phase 2 module loads succeed.
+if grep -qi armbian /etc/os-release 2>/dev/null; then
+  if ! modprobe btusb 2>/dev/null && ! modprobe nf_defrag_ipv4 2>/dev/null; then
+    log "Armbian BTF bug detected — stripping module BTF sections (one-time)..."
+    _strip_netfilter_btf "$(uname -r)"
+    ok "BTF sections stripped"
+  fi
+fi
+
 # ─── Phase 1.5: USB modeswitch — flip CDROM-mode dongles to WiFi mode ─────────
 log "Checking for USB devices stuck in CDROM mode..."
 _cdrom_found=false
@@ -370,6 +381,8 @@ MODULES_FILE="/etc/modules-load.d/music-potato-radios.conf"
 {
   echo "# music-potato USB radio modules — auto-loaded on boot"
   echo "btusb"
+  echo "btrtl"
+  echo "bluetooth"
   for entry in "${FOUND_WIFI[@]}"; do
     IFS='|' read -r chipset driver firmware notes id <<< "$entry"
     [[ "$driver" != "none" ]] && echo "$driver"
@@ -394,7 +407,12 @@ _strip_netfilter_btf() {
       "/lib/modules/$kver/kernel/net/netfilter" \
       "/lib/modules/$kver/kernel/net/ipv4/netfilter" \
       "/lib/modules/$kver/kernel/net/ipv6/netfilter" \
-      "/lib/modules/$kver/kernel/net/bridge/netfilter"; do
+      "/lib/modules/$kver/kernel/net/bridge/netfilter" \
+      "/lib/modules/$kver/kernel/net/bluetooth" \
+      "/lib/modules/$kver/kernel/drivers/net" \
+      "/lib/modules/$kver/kernel/drivers/bluetooth" \
+      "/lib/modules/$kver/kernel/crypto" \
+      "/lib/modules/$kver/kernel/lib"; do
     [ -d "$_dir" ] || continue
     find "$_dir" -name "*.ko" -exec objcopy --remove-section .BTF {} \;
   done
@@ -421,7 +439,12 @@ for dir in \
     /lib/modules/$KVER/kernel/net/netfilter \
     /lib/modules/$KVER/kernel/net/ipv4/netfilter \
     /lib/modules/$KVER/kernel/net/ipv6/netfilter \
-    /lib/modules/$KVER/kernel/net/bridge/netfilter; do
+    /lib/modules/$KVER/kernel/net/bridge/netfilter \
+    /lib/modules/$KVER/kernel/net/bluetooth \
+    /lib/modules/$KVER/kernel/drivers/net \
+    /lib/modules/$KVER/kernel/drivers/bluetooth \
+    /lib/modules/$KVER/kernel/crypto \
+    /lib/modules/$KVER/kernel/lib; do
   [ -d "$dir" ] || continue
   find "$dir" -name "*.ko" -exec objcopy --remove-section .BTF {} \;
 done

@@ -1,7 +1,11 @@
 FROM debian:bullseye-slim
 ARG SPOTIFYD_VERSION=v0.4.2
 ARG TARGETARCH
-RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates curl \
+    libasound2 libasound2-plugins \
+    libssl1.1 \
+    && rm -rf /var/lib/apt/lists/*
 RUN case "${TARGETARCH}" in \
       arm64) ARCH=aarch64 ;; \
       amd64) ARCH=x86_64 ;; \
@@ -10,5 +14,6 @@ RUN case "${TARGETARCH}" in \
     esac && \
     curl -sL "https://github.com/Spotifyd/spotifyd/releases/download/${SPOTIFYD_VERSION}/spotifyd-linux-${ARCH}-slim.tar.gz" \
          | tar -xz -C /usr/local/bin/ && \
-    chmod +x /usr/local/bin/spotifyd
+    chmod +x /usr/local/bin/spotifyd && \
+    ldd /usr/local/bin/spotifyd
 ENTRYPOINT ["spotifyd", "--no-daemon"]

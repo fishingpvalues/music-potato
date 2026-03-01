@@ -223,20 +223,20 @@ services:
       retries: 3
 
   # ── Watchtower — automatic image updates ─────────────────────────────────────
-  # Polls Docker Hub / GHCR daily and updates images automatically.
-  # Respects com.centurylinklabs.watchtower.enable labels.
-  watchtower:
-    image: containrrr/watchtower:latest       # multi-arch: arm64 supported
-    container_name: watchtower-music-potato
-    <<: *restart
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      WATCHTOWER_CLEANUP: "true"             # remove old images after update
-      WATCHTOWER_POLL_INTERVAL: "86400"      # check once per day (seconds)
-      WATCHTOWER_INCLUDE_STOPPED: "false"
-      WATCHTOWER_LABEL_ENABLE: "false"       # update ALL containers
-      TZ: ${TZ:-Europe/Berlin}
+  # NOTE: containrrr/watchtower:latest uses Docker API v1.25 which is below the
+  # minimum v1.44 required by Docker Engine 29.x. Disabled until watchtower
+  # releases a new version compatible with Docker 29+.
+  # watchtower:
+  #   image: containrrr/watchtower:latest
+  #   container_name: watchtower-music-potato
+  #   <<: *restart
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   environment:
+  #     WATCHTOWER_CLEANUP: "true"
+  #     WATCHTOWER_POLL_INTERVAL: "86400"
+  #     WATCHTOWER_LABEL_ENABLE: "false"
+  #     TZ: ${TZ:-Europe/Berlin}
 
 # ─── Volumes ───────────────────────────────────────────────────────────────────
 volumes:

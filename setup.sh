@@ -24,6 +24,7 @@
 # Safe to re-run. Unplug → plug back in → everything comes back in ~30 sec.
 # ═══════════════════════════════════════════════════════════════════════════════
 set -euo pipefail
+trap 'echo "ERR at line $LINENO: $BASH_COMMAND" >&2' ERR
 
 RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'; BLUE='\033[0;34m'; BOLD='\033[1m'; NC='\033[0m'
 log()  { echo -e "${BLUE}[....] $*${NC}"; }

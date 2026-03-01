@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM debian:bullseye-slim
 ARG SPOTIFYD_VERSION=v0.4.2
 ARG TARGETARCH
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl && rm -rf /var/lib/apt/lists/*

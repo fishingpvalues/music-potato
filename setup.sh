@@ -87,9 +87,9 @@ CHIPSET_DB=(
   "0bda:8811|wifi|RTL8811AU|rtw8811au|firmware-realtek|AC600 — kernel 6.14+"
   "0bda:8852|wifi|RTL8852BU|rtw8852bu|firmware-realtek|WiFi 6 — kernel 6.17+"
   "0bda:c852|wifi|RTL8852CU|rtw8852cu|firmware-realtek|WiFi 6 — kernel 6.17+"
-  # WiFi — Realtek RTL8188GU (starts in CDROM mode; usb-modeswitch switches to f179)
-  "0bda:1a2b|wifi-cdrom|RTL8188GU|rtl8xxxu|firmware-realtek|N300 2.4GHz — CDROM mode on plug-in; auto-switched to 0bda:f179"
-  "0bda:f179|wifi|RTL8188GU|rtl8xxxu|firmware-realtek|N300 2.4GHz (post-modeswitch; kernel 5.16+)"
+  # WiFi — Realtek RTL8821CU combo (starts in CDROM mode; Armbian ships 8821cu.ko out-of-box)
+  "0bda:1a2b|wifi-cdrom|RTL8821CU|8821cu|armbian-firmware-full|802.11ac — CDROM mode on plug-in; usb-modeswitch → 0bda:c820"
+  "0bda:c820|wifi|RTL8821CU|8821cu|armbian-firmware-full|802.11ac 2.4/5GHz (RTL8821CU; post-modeswitch from 1a2b)"
   # WiFi — Atheros (in-kernel, needs firmware)
   "0cf3:9271|wifi|AR9271|ath9k_htc|firmware-atheros|N150 — TP-Link TL-WN722N v1 only"
   "0cf3:7015|wifi|AR7015|ath9k_htc|firmware-atheros|N150 variant"
@@ -281,7 +281,7 @@ ask HOMELAB_IP      "Homelab LAN IP"                            "192.168.1.100"
 ask DEVICE_NAME     "Device name (AirPlay / Spotify label)"     "music-potato"
 ask NAVIDROME_USER  "Navidrome username"                        "daniel"
 ask NAVIDROME_PASS  "Navidrome password"                        ""              "yes"
-ask TS_AUTHKEY      "Tailscale auth key (tskey-auth-...)"       ""
+TS_AUTHKEY="${TS_AUTHKEY:-}"  # optional — set via env or leave empty to skip
 ask AUDIO_DEVICE    "ALSA output (hw:0,0=HDMI | hw:1,0=USB DAC | hw:0,1=SPDIF)" "hw:0,0"
 ask SNAPSERVER_HOST "Homelab IP for Snapcast multi-room"        "${HOMELAB_IP}"
 
@@ -463,13 +463,17 @@ else
 fi
 systemctl enable tailscaled
 systemctl start tailscaled
-tailscale up \
-  --auth-key="${TS_AUTHKEY}" \
-  --hostname="${DEVICE_NAME}" \
-  --accept-dns=true \
-  --ssh 2>/dev/null \
-  && ok "Tailscale: connected as ${DEVICE_NAME} ($(tailscale ip 2>/dev/null || echo 'check: tailscale ip'))" \
-  || warn "Tailscale auth failed — run: tailscale up --auth-key=<key> --hostname=${DEVICE_NAME}"
+if [[ -n "${TS_AUTHKEY}" ]]; then
+  tailscale up \
+    --auth-key="${TS_AUTHKEY}" \
+    --hostname="${DEVICE_NAME}" \
+    --accept-dns=true \
+    --ssh 2>/dev/null \
+    && ok "Tailscale: connected as ${DEVICE_NAME} ($(tailscale ip 2>/dev/null || echo 'check: tailscale ip'))" \
+    || warn "Tailscale auth failed — run: tailscale up --auth-key=<key> --hostname=${DEVICE_NAME}"
+else
+  warn "Tailscale: no auth key — run manually: tailscale up --auth-key=<key> --hostname=${DEVICE_NAME} --accept-dns=true --ssh"
+fi
 
 # ─── Phase 12: Docker stack config ────────────────────────────────────────────
 log "Writing ${SCRIPT_DIR}/.env ..."

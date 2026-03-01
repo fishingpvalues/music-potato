@@ -141,18 +141,11 @@ fi
 log "Updating system and installing packages..."
 apt-get update -qq
 apt-get upgrade -y -qq
+# Armbian ships armbian-firmware-full instead of linux-firmware
+_fw_pkg="linux-firmware"
+grep -qi armbian /etc/os-release 2>/dev/null && _fw_pkg="armbian-firmware-full"
 apt-get install -y -qq \
-  firmware-mediatek firmware-realtek firmware-atheros linux-firmware \
-  network-manager curl wget usbutils \
-  usb-modeswitch usb-modeswitch-data \
-  alsa-utils \
-  pipewire pipewire-audio-client-libraries pipewire-pulse pipewire-alsa \
-  wireplumber libspa-0.2-bluetooth \
-  bluez bluez-tools bluetooth \
-  avahi-daemon avahi-utils libnss-mdns \
-  nfs-common 2>/dev/null || \
-apt-get install -y \
-  firmware-mediatek firmware-realtek firmware-atheros linux-firmware \
+  firmware-mediatek firmware-realtek firmware-atheros "${_fw_pkg}" \
   network-manager curl wget usbutils \
   usb-modeswitch usb-modeswitch-data \
   alsa-utils \

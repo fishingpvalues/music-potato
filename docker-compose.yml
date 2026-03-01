@@ -246,12 +246,11 @@ services:
     environment:
       BACKREST_DATA: /data
       BACKREST_CONFIG: /config/config.json
-      BACKREST_HOST: "0.0.0.0:9898"
       TZ: ${TZ:-Europe/Berlin}
     entrypoint:
       - sh
       - -c
-      - "umask 0077; chmod 700 /root/.ssh 2>/dev/null; chmod 600 /root/.ssh/id_ed25519 /root/.ssh/config 2>/dev/null; exec /backrest"
+      - "umask 0077; chmod 700 /root/.ssh 2>/dev/null; chmod 600 /root/.ssh/id_ed25519 /root/.ssh/config 2>/dev/null; exec /backrest --bind-address :9898"
 
   # ── Watchtower — automatic image updates ─────────────────────────────────────
   # NOTE: containrrr/watchtower:latest uses Docker API v1.25 which is below the

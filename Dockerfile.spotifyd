@@ -14,6 +14,5 @@ RUN case "${TARGETARCH}" in \
     esac && \
     curl -sL "https://github.com/Spotifyd/spotifyd/releases/download/${SPOTIFYD_VERSION}/spotifyd-linux-${ARCH}-slim.tar.gz" \
          | tar -xz -C /usr/local/bin/ && \
-    chmod +x /usr/local/bin/spotifyd && \
-    ldd /usr/local/bin/spotifyd
+    chmod +x /usr/local/bin/spotifyd
 ENTRYPOINT ["spotifyd", "--no-daemon"]

@@ -87,6 +87,9 @@ CHIPSET_DB=(
   "0bda:8811|wifi|RTL8811AU|rtw8811au|firmware-realtek|AC600 — kernel 6.14+"
   "0bda:8852|wifi|RTL8852BU|rtw8852bu|firmware-realtek|WiFi 6 — kernel 6.17+"
   "0bda:c852|wifi|RTL8852CU|rtw8852cu|firmware-realtek|WiFi 6 — kernel 6.17+"
+  # WiFi — Realtek RTL8188GU (starts in CDROM mode; usb-modeswitch switches to f179)
+  "0bda:1a2b|wifi-cdrom|RTL8188GU|rtl8xxxu|firmware-realtek|N300 2.4GHz — CDROM mode on plug-in; auto-switched to 0bda:f179"
+  "0bda:f179|wifi|RTL8188GU|rtl8xxxu|firmware-realtek|N300 2.4GHz (post-modeswitch; kernel 5.16+)"
   # WiFi — Atheros (in-kernel, needs firmware)
   "0cf3:9271|wifi|AR9271|ath9k_htc|firmware-atheros|N150 — TP-Link TL-WN722N v1 only"
   "0cf3:7015|wifi|AR7015|ath9k_htc|firmware-atheros|N150 variant"
@@ -94,6 +97,7 @@ CHIPSET_DB=(
   "0bda:8761|bt|RTL8761B|btrtl|firmware-realtek|BT 5.0 — TP-Link UB500 recommended"
   "0bda:b009|bt|RTL8822BS|btrtl|firmware-realtek|BT 5.0 combo"
   "0bda:c123|bt|RTL8822CU|btrtl|firmware-realtek|BT 5.0 combo"
+  "0bda:c821|bt|RTL8821CU|btrtl|firmware-realtek|BT 5.0 — RTL8821CU/RTL8811CU combo dongle"
   # Bluetooth — MediaTek (in-kernel btmtk)
   "0e8d:c616|bt|MT7921|btmtk|firmware-mediatek|BT 5.2 — MT7921au combo chip"
   "0e8d:c615|bt|MT7663|btmtk|firmware-mediatek|BT 5.0"
@@ -140,6 +144,7 @@ apt-get upgrade -y -qq
 apt-get install -y -qq \
   firmware-mediatek firmware-realtek firmware-atheros linux-firmware \
   network-manager curl wget usbutils \
+  usb-modeswitch usb-modeswitch-data \
   alsa-utils \
   pipewire pipewire-audio-client-libraries pipewire-pulse pipewire-alsa \
   wireplumber libspa-0.2-bluetooth \
@@ -149,6 +154,7 @@ apt-get install -y -qq \
 apt-get install -y \
   firmware-mediatek firmware-realtek firmware-atheros linux-firmware \
   network-manager curl wget usbutils \
+  usb-modeswitch usb-modeswitch-data \
   alsa-utils \
   pipewire pipewire-audio-client-libraries pipewire-pulse pipewire-alsa \
   wireplumber libspa-0.2-bluetooth \
@@ -156,6 +162,31 @@ apt-get install -y \
   avahi-daemon avahi-utils libnss-mdns \
   nfs-common
 ok "Packages installed"
+
+# ─── Phase 1.5: USB modeswitch — flip CDROM-mode dongles to WiFi mode ─────────
+log "Checking for USB devices stuck in CDROM mode..."
+_cdrom_found=false
+while IFS= read -r line; do
+  id=$(echo "$line" | grep -oP 'ID \K[0-9a-f]{4}:[0-9a-f]{4}' | head -1)
+  [[ -z "$id" ]] && continue
+  entry=$(lookup_id "$id") || true
+  if [[ -n "$entry" ]]; then
+    IFS='|' read -r _id type chipset _drv _fw notes <<< "$entry"
+    if [[ "$type" == "wifi-cdrom" ]]; then
+      warn "$chipset ($id) is in CDROM mode — running usb_modeswitch..."
+      usb_modeswitch -K -v "0x${id%%:*}" -p "0x${id##*:}" 2>/dev/null || true
+      _cdrom_found=true
+    fi
+  fi
+done < <(lsusb)
+if $_cdrom_found; then
+  log "Waiting for device re-enumeration (5s)..."
+  sleep 5
+  udevadm settle 2>/dev/null || true
+  ok "Modeswitch done — device should now appear as WiFi adapter"
+else
+  ok "No CDROM-mode devices found"
+fi
 
 # ─── Phase 2: Detect USB radios + load modules ────────────────────────────────
 log "Scanning USB bus for known WiFi and Bluetooth adapters..."

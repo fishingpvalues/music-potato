@@ -382,6 +382,55 @@ MODULES_FILE="/etc/modules-load.d/music-potato-radios.conf"
 ok "Kernel modules saved to $MODULES_FILE"
 
 # ─── Phase 8: Docker ──────────────────────────────────────────────────────────
+# Armbian 6.12.x-meson64 has a BTF validation bug that prevents nf_defrag_ipv4
+# and its dependents from loading, which breaks Docker bridge networking.
+# Fix: strip the .BTF ELF section from all netfilter modules (removes only
+# debug metadata, not code), then install a kernel post-install hook so the
+# fix survives future kernel upgrades.
+_strip_netfilter_btf() {
+  local kver="${1:-$(uname -r)}"
+  command -v objcopy &>/dev/null || apt-get install -y -qq binutils
+  for _dir in \
+      "/lib/modules/$kver/kernel/net/netfilter" \
+      "/lib/modules/$kver/kernel/net/ipv4/netfilter" \
+      "/lib/modules/$kver/kernel/net/ipv6/netfilter" \
+      "/lib/modules/$kver/kernel/net/bridge/netfilter"; do
+    [ -d "$_dir" ] || continue
+    find "$_dir" -name "*.ko" -exec objcopy --remove-section .BTF {} \;
+  done
+  depmod -a "$kver"
+}
+if grep -qi armbian /etc/os-release 2>/dev/null; then
+  # Test if BTF bug is present (nf_defrag_ipv4 is the canary module)
+  if ! modprobe nf_defrag_ipv4 2>/dev/null; then
+    log "Armbian BTF bug detected — stripping netfilter module BTF sections..."
+    _strip_netfilter_btf "$(uname -r)"
+    modprobe nf_defrag_ipv4 2>/dev/null && ok "Netfilter BTF fix applied" || warn "BTF strip done but module still fails — check dmesg"
+  else
+    ok "Netfilter modules load OK (no BTF strip needed)"
+  fi
+  # Install kernel post-upgrade hook so the fix survives kernel updates
+  cat > /etc/kernel/postinst.d/01-strip-netfilter-btf << 'HOOK'
+#!/bin/bash
+# Strip invalid BTF sections from netfilter modules after each kernel install.
+# Fixes Armbian meson64 BTF validation bug that prevents Docker from starting.
+KVER=$1
+[ -z "$KVER" ] && KVER=$(uname -r)
+command -v objcopy &>/dev/null || exit 0
+for dir in \
+    /lib/modules/$KVER/kernel/net/netfilter \
+    /lib/modules/$KVER/kernel/net/ipv4/netfilter \
+    /lib/modules/$KVER/kernel/net/ipv6/netfilter \
+    /lib/modules/$KVER/kernel/net/bridge/netfilter; do
+  [ -d "$dir" ] || continue
+  find "$dir" -name "*.ko" -exec objcopy --remove-section .BTF {} \;
+done
+depmod -a "$KVER"
+HOOK
+  chmod +x /etc/kernel/postinst.d/01-strip-netfilter-btf
+  ok "Installed kernel post-install hook for BTF fix"
+fi
+
 if ! command -v docker &>/dev/null; then
   log "Installing Docker..."
   curl -fsSL https://get.docker.com | sh
@@ -390,7 +439,7 @@ else
   ok "Docker already installed ($(docker --version | cut -d' ' -f3 | tr -d ','))"
 fi
 systemctl enable docker
-systemctl start docker
+systemctl start docker || { warn "Docker failed to start — check: journalctl -xeu docker.service"; }
 usermod -aG docker "${INSTALL_USER}"
 ok "Docker enabled, ${INSTALL_USER} added to docker group"
 

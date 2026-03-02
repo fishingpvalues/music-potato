@@ -1,662 +1,628 @@
-# Onkyo TX-SR605 — Complete Setup Guide
-## For: Yamaha YST-FSW050 + Fluance ES1 + Le Potato Audio Stack
+# Onkyo TX-SR605 — Setup Guide
+## Yamaha YST-FSW050 sub + Fluance ES1 towers + Le Potato
+## NO REMOTE — front panel buttons only
 
 ---
 
-## Your Hardware at a Glance
+## Read This First
 
-### Onkyo TX-SR605
-| Spec | Value |
-|---|---|
-| Channels | 7.1 |
-| Power | 100W × 7 (6Ω), 85W × 7 (8Ω) |
-| Room correction | Audyssey 2EQ (entry-level, 1 measurement point) |
-| Crossover options | Full Band, 40 / 50 / 60 / **80** / 100 / 120 / 150 / 200 Hz |
-| LPF for LFE | 40–120 Hz |
-| HDMI | 1.3a — 3 in / 1 out, passes PCM audio |
-| Digital inputs | 2× optical (TOSLINK), 2× coaxial |
-| Video circuits | Active in all modes **except** Pure Audio |
+### Front Panel Buttons Used in This Guide
 
-### Fluance ES1 (your "speakers")
-> **Note:** The ES1 is a **floorstanding tower**, not a bookshelf — 51 inches tall, four 5-inch woofers + 1-inch silk dome tweeter.
+```
+[ STANDBY/ON ]                              — power on/off
 
-| Spec | Value |
-|---|---|
-| Type | 2-way floorstanding tower |
-| Drivers | 4× 5" woven fiberglass woofer + 1" silk dome tweeter |
-| Internal crossover | 3,500 Hz (woofer → tweeter) |
-| Rated frequency response | 72 Hz – 20 kHz |
-| Actual usable bass | Rolls off significantly above 100 Hz — **subwoofer is not optional** |
-| Sensitivity | 87.6 dB measured (Audioholics) — 90 dB rated |
-| Impedance | 8 Ω nominal, 6.4 Ω minimum — easy load for any amp |
-| Power handling | 40–160 W recommended |
-| Known quirk | Brightness peak in treble — tweeter is forward/bright sounding. Audyssey helps tame this. |
+[ DVD ] [ CBL/SAT ] [ GAME/TV ]             — HDMI inputs 1/2/3
+[ CD ]  [ TAPE ]                            — optical inputs 1/2
 
-### Yamaha YST-FSW050
-| Spec | Value |
-|---|---|
-| Type | Powered subwoofer, down-firing, compact |
-| Driver | 6.5" reinforced multi-range cone |
-| Power | 100 W dynamic |
-| Frequency response | 35–160 Hz |
-| Technology | Advanced YST II (Active Servo Technology) + QD-Bass + Linear Port |
-| Controls | Volume knob, Phase switch (0°/180°), Power switch |
-| Auto power | **No auto-on** — must be switched on manually or left on |
-| Dimensions | 13¾" × 6⁷⁄₁₆" × 13¾" (W × H × D) |
-| Weight | 8.5 kg / 18.7 lbs |
+[ MASTER VOLUME ]                           — large knob, left side
+
+[ LISTENING MODE ◄ ] [ LISTENING MODE ► ]  — cycle listening modes
+[ STEREO ]                                  — jump directly to Stereo mode
+
+[ SETUP ]                                   — open/close setup menus
+[ ▲ ] [ ▼ ] [ ◄ ] [ ► ]                   — navigate menus
+[ ENTER ]                                   — confirm / enter submenu
+[ RETURN ]                                  — go back one level
+
+[ DIGITAL INPUT ]                           — assign digital inputs
+[ TONE – ] [ TONE + ]                       — bass/treble (Stereo mode only)
+```
+
+### How SETUP menus work
+
+```
+Press [SETUP]       → menu opens (on TV screen if TV is connected, or on front display)
+[▲][▼]             → scroll up/down through items
+[ENTER]             → go into a submenu / confirm
+[◄][►]             → change a value
+[RETURN]            → go back one level
+[SETUP] again       → exit all menus at any time
+```
+
+> **Tip — connect a TV first.** Plug a TV into Onkyo's **HDMI OUT** before setup. Full menus appear on screen, much easier than reading the tiny front panel display. Disconnect TV after setup if you don't need it.
+
+### Critical facts about your hardware
+
+**1. The ES1 towers need the sub.** Four 5-inch woofers roll off before 100 Hz. Without the sub active, your music has no bass.
+
+**2. Never use Pure Audio mode.** It disables bass management entirely — sub gets zero signal with stereo music. Use **Direct** mode instead.
+
+**3. Crossover = 80 Hz.** ES1 usable bass ends around 80–100 Hz. 80 Hz hands bass to the Yamaha sub cleanly. Setting it higher just works the sub harder; lower stresses the ES1 woofers.
+
+**4. ES1 tweeter is bright.** Audioholics measurements show +3–6 dB peak from 5–20 kHz. Fix: −2 dB treble trim in Stereo mode. Direct mode has no tone controls — if brightness bothers you there, switch to Stereo.
 
 ---
 
-## Critical Facts Before You Start
+## PHASE 1 — Before Powering On
 
-**1. The ES1 needs a subwoofer.** The Audioholics review is explicit: *"this loudspeaker requires a subwoofer for music."* Its four 5-inch woofers roll off before 100 Hz in real conditions. Without the sub working, your music has no bass.
-
-**2. Pure Audio mode silences your subwoofer for stereo music.** Pure Audio is often recommended for lossless listening but on the TX-SR605 it disables bass management entirely — the sub only receives the LFE (.1) channel. Stereo music has no LFE channel. **Result: sub is silent in Pure Audio with stereo sources.** Use **Direct mode** instead (explained below).
-
-**3. Audyssey 2EQ on the 605 sets crossovers too high for the ES1.** Independent testing shows Audyssey can set the ES1's crossover as high as 150 Hz automatically because it correctly measures the speaker's weak bass. After running Audyssey you must manually lower the crossover to 80 Hz.
-
-**4. The ES1 tweeter is bright.** Measurements show a consistent 3–6 dB treble rise above the midrange. At loud volumes this can cause listening fatigue. The Audyssey EQ curve helps — do NOT use Pure Audio if this bothers you. Direct mode keeps the Audyssey correction active.
+Do all of this with the receiver off.
 
 ---
 
-## Part 1 — Physical Connections
+### 1. Place the ES1 Towers
 
-### Speaker Wiring
-
-```
-Onkyo FRONT L (red/black) ──── Fluance ES1 Left  (match +/- polarity)
-Onkyo FRONT R (red/black) ──── Fluance ES1 Right (match +/- polarity)
-```
-
-**Wire gauge:** Use at least 16 AWG for runs under 5m. 14 AWG for longer. Thinner wire adds resistance and reduces damping factor — audible in the bass.
-
-**Polarity is critical:** Red (+) to red (+), black (−) to black (−). Reversed polarity on one speaker cancels bass and shifts the stereo image. After wiring, play mono music (a podcast) and the centre image should be solid and centred. If it seems hollow or diffuse, check polarity.
-
-### Subwoofer Connection
+The ES1 is rear-ported — it needs air behind it or bass goes boomy.
 
 ```
-Onkyo SUBWOOFER PRE OUT ──── RCA cable ──── Yamaha YST-FSW050 LINE IN
+Back wall clearance:   60–90 cm minimum  (2–3 ft)
+Side wall clearance:   60 cm minimum
+Tweeter separation:    1.8–2.5 m apart
 ```
 
-Use a single RCA cable (sub is mono). The Onkyo has one dedicated sub pre-out jack — this is line-level signal. Do NOT connect to the speaker-level inputs on the sub.
-
-### Le Potato Audio Connection — Pick One
+**Equilateral triangle:** distance between the two tweeters = distance from each tweeter to your listening position.
 
 ```
-Option A (HDMI):    Le Potato HDMI ──────────── Onkyo HDMI IN 1
-Option B (optical): Le Potato 9J1 TOSLINK ────── Onkyo OPTICAL IN 1
+  [Left ES1] ←——— 2 m ———→ [Right ES1]
+         \                  /
+          \                /
+           2 m          2 m
+                 [You]
 ```
 
-See `TUTORIAL.md` Part 5 for hardware details on both options. HDMI is recommended unless you specifically want galvanic isolation.
+**Toe-in:** Point both speakers toward your listening position at **22–30°**. The ES1 tweeter is bright — less toe-in = softer treble. Start at 22°, adjust in 5° steps by ear after everything else is set.
 
 ---
 
-## Part 2 — Subwoofer Physical Setup
-
-### Placement
-
-The YST-FSW050 is down-firing with a Linear Port. Placement significantly affects bass quality.
+### 2. Place the Yamaha Sub
 
 **Best positions (try in this order):**
+1. Along the front wall between the two ES1 towers — most integrated
+2. Front corner (left or right of speakers) — more output, can sound boomy
+3. Against a side wall — if corners are impractical
 
-1. **Front corner** (left or right of speakers) — reinforces bass, adds output. Can sound "boomy" in some rooms.
-2. **Along the front wall** between the two Fluance ES1 towers — most integrated, sounds like bass is coming from the speakers themselves.
-3. **Against a side wall** — works if corners are impractical.
+**Avoid:** inside a cabinet (blocks down-firing port), middle of the room, directly behind your listening position.
 
-**Avoid:**
-- Directly between the listening position and the back wall — causes bass build-up
-- Inside a cabinet or cupboard — blocks the down-firing port, chokes output
-- Floating in the middle of the room — lacks reinforcement, sounds thin
-
-**The subwoofer crawl (definitive placement method):**
-1. Place the sub at your listening position (on the sofa or chair)
-2. Play music with steady bass (a bassline song you know well)
-3. Crawl around the floor near where you'd normally put the sub
+**Subwoofer crawl (optional but best method):**
+1. Temporarily place the sub at your listening position (on the sofa/chair)
+2. Play music with steady bass
+3. Crawl around the floor near where the sub will normally live
 4. The spot where bass sounds fullest and most even = where the sub goes
-5. Move sub to that spot
+5. Move sub there
 
-**Floor surface:** Place on a solid, non-carpeted surface if possible. On carpet, the down-firing port partially loses efficiency. Optional: sub isolation platform or feet (prevents vibration transfer into floor/ceiling).
+**Set the sub's physical knobs now:**
 
----
-
-## Part 3 — Subwoofer Controls
-
-The YST-FSW050 has three physical controls. Set them **before** running Audyssey:
-
-### Volume Knob
-Set to **50–60%** before Audyssey calibration. Audyssey will measure and trim the sub level itself. After Audyssey, do fine adjustments via the Onkyo's sub level control, not the sub's knob.
-
-### Phase Switch (0° / 180°)
-This aligns the subwoofer's bass output with your main speakers. Wrong phase = bass cancellation (thin, weak sound).
-
-**How to set:**
-1. Play a track with heavy bass between 60–100 Hz (e.g., bass guitar or kick drum)
-2. Switch between 0° and 180°
-3. Use the position where bass sounds **louder, fuller, more present**
-
-There is no universally correct answer — it depends on sub placement and room acoustics. Most setups end up at 0°. If the sub seems to add nothing at 0°, try 180°.
-
-### Crossover Knob (if present)
-Set to **maximum position** — you want the Onkyo receiver to control the crossover via bass management, not the sub's internal filter. The YST-FSW050's LPF knob adds its own rolloff on top of the Onkyo's — using both is wrong.
-
-### Power
-The YST-FSW050 has no auto-on. Leave it powered on whenever the Onkyo is in use. You can place it on a smart plug and control it with the system power switch.
-
----
-
-## Part 4 — Running Audyssey 2EQ
-
-Audyssey 2EQ is the TX-SR605's automatic room calibration. It measures speaker output, sets levels, distances, and applies EQ. Run it once before doing anything else — then override specific settings.
-
-### Prepare the Room
-
-- Move furniture away from the mic position if possible
-- Turn off fans, AC units, dishwasher — anything that makes background noise
-- Make the room as quiet as possible (Audyssey's test tones are loud)
-- Put pets and people outside the room
-
-### Place the Calibration Microphone
-
-Connect the supplied Audyssey mic to the front panel **SETUP MIC** jack.
-
-Place the mic:
-- At ear height at the main listening position (where you actually sit)
-- On a mic stand or stack of books — not in your hand
-- Pointing straight up (omnidirectional — direction doesn't matter much)
-
-### Run Auto Setup
-
-```
-Remote: SETUP → Auto Setup → Next
-```
-
-Follow the on-screen steps:
-1. Audyssey plays test tones for each speaker channel
-2. It detects whether speakers are present/absent
-3. It plays swept tones through each detected speaker
-4. Takes about 3–5 minutes
-
-When complete, Audyssey will show what it measured:
-- Speaker sizes (Large/Small — almost certainly all Small)
-- Distances (in meters or feet)
-- Levels (dB)
-- Crossover frequencies
-
-**Write down everything Audyssey set** — you'll be overriding some of it.
-
-### Audyssey Results for Your Setup
-
-Expected results for the Fluance ES1 + Yamaha YST-FSW050:
-
-| Speaker | Expected Audyssey result | Why |
+| Knob | Set to | Why |
 |---|---|---|
-| Front L/R (ES1) | Small, 80–150 Hz crossover | Audyssey correctly sees weak bass in ES1 |
-| Subwoofer | Present, level varies | Should be at around +0 to +3 dB relative |
-
-If Audyssey sets crossover above 80 Hz (e.g., 120 Hz or 150 Hz) — do NOT accept it. It means Audyssey thinks your ES1 needs extra sub support at a high frequency. Override to 80 Hz (next section).
+| Volume | 50–60% | Starting point — you'll calibrate exactly via the receiver in Step 8 |
+| Crossover | MAX (fully clockwise) | The Onkyo controls the crossover. Sub's own filter adds on top and causes problems. |
+| Phase | 0° | Default. You'll test 0° vs 180° in Step 9 and pick whichever sounds fuller. |
+| Power | ON | No auto-on on this sub. Leave it on whenever the Onkyo is in use. |
 
 ---
 
-## Part 5 — Post-Audyssey Manual Overrides
+### 3. Wire the Speakers
 
-These are the most important settings. Navigate to:
 ```
-Remote: SETUP → Manual Setup → Speaker Setup
+Onkyo FRONT L terminals ──── Fluance ES1 Left   (red → red+, black → black−)
+Onkyo FRONT R terminals ──── Fluance ES1 Right  (red → red+, black → black−)
 ```
 
-### 5.1 — Speaker Size
+**Polarity is critical.** Red to red, black to black on both speakers. Reversed polarity on one speaker cancels bass and makes the stereo image hollow.
 
-| Channel | Set to | Reason |
+**Check after wiring:** Play a podcast or spoken voice. The voice should sound solid and centred. If it sounds hollow, thin, or like it's coming from two places — one speaker is wired backwards, swap its two wires.
+
+---
+
+### 4. Wire the Subwoofer
+
+```
+Onkyo SUBWOOFER PRE OUT ──── single RCA cable ──── Yamaha YST-FSW050 LINE IN
+```
+
+One RCA cable, sub is mono. Do not use the sub's speaker-level inputs.
+
+---
+
+### 5. Connect Le Potato to the Onkyo
+
+Pick one:
+
+```
+Option A (recommended): Le Potato HDMI out  ────  Onkyo HDMI IN 1
+Option B (optical):     Le Potato TOSLINK   ────  Onkyo OPTICAL IN 1
+```
+
+---
+
+### 6. Connect a TV for Menu Navigation (recommended)
+
+```
+Onkyo HDMI OUT  ────  TV HDMI IN
+```
+
+Full graphical menus appear on the TV screen. Without a TV you navigate by reading the Onkyo's own front panel display (abbreviated text, doable but harder). You can disconnect the TV after setup is complete.
+
+---
+
+## PHASE 2 — Receiver Setup (front panel buttons only)
+
+Work through these steps **in order from top to bottom**.
+
+---
+
+### Step 1 — Power On
+
+Press **[STANDBY/ON]**.
+
+---
+
+### Step 2 — Select Your Input
+
+Press the input button for your Le Potato connection:
+
+| Le Potato connected to | Press |
+|---|---|
+| HDMI IN 1 | **[DVD]** |
+| HDMI IN 2 | **[CBL/SAT]** |
+| HDMI IN 3 | **[GAME/TV]** |
+| OPTICAL IN 1 | **[CD]** |
+| OPTICAL IN 2 | **[TAPE]** |
+
+Front panel display shows the selected input name.
+
+**If display shows "NO SIGNAL"** after selecting an optical input:
+```
+Press [DIGITAL INPUT]
+Press [◄][►] to cycle to: OPT 1 (or OPT 2 for optical in 2)
+```
+For HDMI inputs this is automatic — no assignment needed.
+
+**What the display should show when signal is present:**
+- `PCM` or `PCM 44.1K` / `PCM 48K` / `PCM 96K` = correct, lossless audio
+- `DD` or `DTS` = problem on the Le Potato side (see Troubleshooting)
+
+---
+
+### Step 3 — Open Speaker Setup
+
+```
+Press [SETUP]
+Press [▲][▼] to highlight "2. Speaker Setup"
+Press [ENTER]
+```
+
+You are now in the Speaker Setup submenu. Stay here for Steps 4, 5, and 6.
+
+---
+
+### Step 4 — Set Speaker Config (crossover and subwoofer)
+
+```
+Press [▲][▼] to highlight "2. Speaker Config"
+Press [ENTER]
+```
+
+Navigate each row with **[▲][▼]**, change values with **[◄][►]**:
+
+| Row on screen | Set to | Notes |
 |---|---|---|
-| Front L/R (Fluance ES1) | **Small** | Forces bass below crossover to the sub. ES1 cannot cleanly reproduce below ~80 Hz despite being a tower. |
-| Center | None (unused) | No centre speaker in this setup |
-| Surround | None (unused) | No surrounds |
-| Subwoofer | Yes | YST-FSW050 is connected |
+| Subwoofer | **Yes** | Tells the receiver the sub is connected |
+| Front | **80 Hz** | ES1 crossover — bass below 80 Hz goes to sub |
+| Center | **None** | No centre speaker in this 2.1 setup |
+| Surround | **None** | No surrounds |
+| Surr Back | **None** | No surround back |
+| LPF of LFE | **120 Hz** | Max frequency sent to sub from .1 channel |
+| Double Bass | **Off** | Would add front channel bass to sub — wrong here |
 
-> **Why not "Large" for the ES1?**
-> "Large" tells the Onkyo the speaker is full-range and sends all bass to it. The ES1's four 5-inch woofers struggle below 80 Hz. Setting them Large and skipping bass management means the ES1 distorts at bass frequencies and the sub does nothing useful for stereo music. Small + 80 Hz crossover = cleaner sound, better dynamics.
-
-### 5.2 — Crossover Frequency
-
+When all values are set:
 ```
-Front speakers (ES1): 80 Hz
+Press [RETURN]  →  back to Speaker Setup menu
 ```
-
-The Fluance ES1 is rated to 72 Hz but reliably usable only above ~100 Hz. The THX standard 80 Hz crossover is the correct choice — it:
-- Relieves the ES1 from the deepest bass (least distortion)
-- Hands bass to the YST-FSW050 which handles 35–160 Hz
-- Places the crossover where the ES1 has overlap with the sub (80–100 Hz range)
-
-If after listening the bass/mid-bass sounds slightly disconnected, try 100 Hz. If it sounds like two separate sound sources, drop back to 80 Hz.
-
-### 5.3 — LPF for LFE (Low-Pass Filter for subwoofer)
-
-```
-SETUP → Manual Setup → Speaker Setup → LPF for LFE
-Set to: 120 Hz
-```
-
-This is the maximum frequency the Onkyo will send to the sub from the LFE channel. 120 Hz is the standard home theater setting and matches what Dolby and DTS specify.
-
-### 5.4 — Subwoofer Level
-
-```
-SETUP → Manual Setup → Levels → Subwoofer
-```
-
-Start at **0 dB** (flat, Audyssey calibrated it). Fine-tune by ear after everything else is set.
 
 ---
 
-## Part 6 — Listening Modes Explained (For This Setup)
+### Step 5 — Set Speaker Distances
 
-This is the most misunderstood part of the TX-SR605. Here is exactly what each mode does and which one to use when:
+Measure the distance from your listening position (where your head is when seated) to each speaker with a tape measure.
 
-### PURE AUDIO
+```
+Press [▲][▼] to highlight "3. Speaker Distance"
+Press [ENTER]
+```
 
-**What it does:**
-- Disables ALL digital signal processing
-- Disables Audyssey EQ
-- Disables tone controls (bass/treble)
-- Disables Dynamic EQ, Late Night, Re-EQ
-- **Turns off the video circuits** (HDMI output goes dark — normal, not broken)
-- Puts the amp in a pure 2-channel analog path
-- Bass management is **OFF** — sub only receives LFE channel
+Navigate with **[▲][▼]**, change values with **[◄][►]** (steps of 0.3 m / 1 ft):
 
-**Effect on your setup:**
-- Fluance ES1 plays full range (no sub support for bass below ~80 Hz)
-- YST-FSW050 is **silent** for all stereo music (no LFE in stereo)
-- Audyssey EQ is **off** — ES1 tweeter brightness is uncontrolled
+| Row | What to enter |
+|---|---|
+| Front L | distance from your seat to Left ES1 tweeter (e.g. 2.4 m) |
+| Front R | distance from your seat to Right ES1 tweeter (e.g. 2.4 m) |
+| Subwoofer | distance from your seat to the Yamaha sub (e.g. 1.8 m) |
+| Center / Surround / Surr Back | skip — set to None |
 
-**When to use:**
-- Never for stereo music with this setup (sub goes silent, ES1 strains)
-- Only if you have full-range speakers with no subwoofer
+Accurate distances fix time alignment so all sounds arrive at your ears at the same moment.
 
----
-
-### DIRECT ✅ Recommended for Music
-
-**What it does:**
-- Disables Audyssey EQ
-- Disables tone controls (bass/treble/loudness)
-- **Keeps bass management active** — sub still works
-- Video circuits remain active (HDMI works normally)
-- Multi-channel sources play through assigned channels
-
-**Effect on your setup:**
-- ES1s play above 80 Hz (crossover active)
-- YST-FSW050 receives bass below 80 Hz — **sub is fully working**
-- Clean signal path without the coloration of EQ
-- Audyssey level corrections still applied (distances, levels set by calibration)
-
-**When to use:** Primary music listening mode. Best balance of signal cleanliness and bass management.
+```
+Press [RETURN]  →  back to Speaker Setup menu
+```
 
 ---
 
-### STEREO
+### Step 6 — Calibrate Speaker Levels
 
-**What it does:**
-- Full signal processing active (Audyssey EQ, tone controls)
-- Bass management active
-- Only front L/R speakers used for stereo sources
-- Sub receives redirected bass
+The receiver plays pink noise from each speaker one at a time. You adjust each channel's volume until all channels are equally loud at your seat.
 
-**Effect on your setup:**
-- Same as Direct but Audyssey EQ corrects the ES1's treble brightness
-- Good if the ES1 sounds harsh or bright in Direct mode
+```
+Press [▲][▼] to highlight "4. Level Calibration"
+Press [ENTER]
+```
 
-**When to use:** If the ES1 treble brightness bothers you in Direct mode. Audyssey's EQ will tame the 3–6 dB treble peak on the ES1.
+Pink noise starts playing from Front Left immediately.
 
----
+**Navigation:**
+- **[▲][▼]** — switch to the next speaker (pink noise moves to that speaker)
+- **[◄][►]** — raise or lower that speaker's level (−12 to +12 dB; sub: −15 to +12 dB)
 
-### DOLBY PRO LOGIC II MUSIC
+#### With a phone SPL meter app (recommended)
 
-**What it does:**
-- Matrix-decodes stereo to 5.1 surround
-- Adds spatial width and depth processing
-- Bass management active, all DSP active
-- Widens the stereo image using surrounds (you don't have surrounds — ignore)
+Download free: **NIOSH SLM** (Android + iOS, NIST-validated) or **Decibel X** (iOS) or **Sound Meter** (Android).
 
-**When to use:** Not applicable for your 2.1 setup (no surrounds). Ignore.
+Set the app to: **C-weighting, Slow response** — do not use A-weighting, it gives wrong readings for this.
 
----
+1. Place phone at ear height at your listening seat, mic pointing straight up
+2. Pink noise is playing from **Front L** — adjust **[◄][►]** until app reads **75 dB**
+3. Press **[▲][▼]** → now on **Front R** — adjust until app reads **75 dB**
+4. Press **[▲][▼]** → now on **Subwoofer** — adjust until app reads **77–78 dB**
 
-### MULTICHANNEL STEREO
+> Sub is set +2–3 dB above mains. In a 2.1 stereo setup the sub handles the bass from both channels combined, while each main speaker handles the full mid + treble range. The slight boost compensates for this asymmetry. This is not the +10 dB cinema LFE reference — that is for movies, not music.
 
-**What it does:**
-- Plays stereo signal through all active speakers simultaneously
-- With your setup: just front L/R + sub (same as Stereo)
-
-**When to use:** Not useful for your setup. Ignore.
-
----
-
-### Mode Summary for Your Setup
-
-| Source | Best mode | Reason |
+| Speaker | Target | Starting point |
 |---|---|---|
-| FLAC/ALAC via MPD | **Direct** | Clean path, sub active, no EQ coloration |
-| Apple Music via AirPlay 2 | **Direct** | Same — lossless needs clean path |
-| Spotify Connect | **Stereo** | Audyssey EQ adds no harm to lossy source, tames brightness |
-| Snapcast multi-room | **Direct** | Same as MPD |
-| Background music | **Stereo** | Audyssey + loudness compensation helps at low volumes |
-| Very loud listening | **Direct** | Avoid loudness/EQ at reference levels |
+| Front L | **75 dB** | 0 dB, adjust ± |
+| Front R | **75 dB** | 0 dB, adjust ± |
+| Subwoofer | **77–78 dB** | +2 to +3 dB above fronts |
 
----
+#### Without an SPL app (by ear)
 
-## Part 7 — Tone Controls and Audio Adjustments
-
-### Bass and Treble
-
-Located in: `Remote: SETUP → Audio Adjust → Bass / Treble`
-
-These only work in **Stereo** and **Multichannel Stereo** modes (not Direct, not Pure Audio).
-
-For the Fluance ES1's known treble brightness:
-```
-Treble: −2 to −3 dB    ← compensates for ES1's measured treble peak
-Bass:   0 dB           ← let the sub handle bass, don't add EQ bass on the amp
-```
-
-Set treble to taste. Some people prefer the ES1's brightness (it sounds "detailed"). Others find it fatiguing over time. The only way to know is to listen.
-
-### Audyssey Dynamic EQ
+1. Listen to pink noise from Front L — note its loudness
+2. **[▲][▼]** → Front R — press **[◄][►]** until it sounds the same loudness as Front L
+3. **[▲][▼]** → Subwoofer — leave at **0 dB** for now, fine-tune by ear in Step 10
 
 ```
-SETUP → Audio Adjust → Audyssey Dynamic EQ → Off (for music)
-```
-
-Dynamic EQ boosts bass and surround at low listening volumes (similar to loudness compensation). Useful for late-night TV at low volume. Distracting for critical music listening. **Turn off for music.**
-
-### Re-EQ
-
-```
-SETUP → Audio Adjust → Re-EQ → Off
-```
-
-Re-EQ is designed to reduce treble harshness in badly mastered movie soundtracks. It hurts music. **Always off for music.**
-
-### Late Night
-
-```
-SETUP → Audio Adjust → Late Night → Off
-```
-
-Compresses dynamic range (loud = quieter, quiet = louder). Useful for movies at 1am. **Off for music.**
-
----
-
-## Part 8 — Subwoofer Fine-Tuning
-
-After running Audyssey and setting crossover to 80 Hz, fine-tune by ear with music you know well. Use something with steady bass — a bass guitar recording or electronic music with a consistent kick drum pattern.
-
-### Level (volume)
-
-```
-Onkyo: SETUP → Manual Setup → Levels → Subwoofer
-```
-
-Adjust in 0.5 dB steps. The sub level is correct when:
-- You cannot hear the sub as a separate object ("I hear bass coming from that box")
-- Bass sounds like it's coming from the Fluance ES1 towers themselves
-- Bass is present but not dominant — the same volume as bass in a well-mixed recording
-
-Common mistake: sub too loud. "Can you hear the sub?" = it's too loud. "Where is the sub?" = level is correct.
-
-Starting point after Audyssey: **0 dB** (Audyssey's calibrated value). Adjust from there.
-
-### Phase (on sub)
-
-**Test procedure:**
-1. Play a bass-heavy track in Direct mode at moderate volume
-2. Toggle the phase switch 0°/180°
-3. Position that sounds **louder and fuller = correct phase**
-
-With typical placement (sub near front wall, listener 2–3m away):
-- 0° is usually correct
-- 180° is sometimes better if sub is behind or beside the listening position
-
-### Crossover dial on the YST-FSW050
-
-**Leave at maximum (fully clockwise).** The Onkyo controls the crossover. Adding a second filter from the sub creates phase problems and rolls off bass prematurely.
-
-### Placement verification
-
-With music playing in Direct mode at moderate volume, press your knee against the floor near the subwoofer. You should feel vibration. Now press your knee against the floor near the Fluance ES1 towers. You should also feel vibration — the ES1's four woofers produce tangible vibration above 80 Hz. If only the sub vibrates and the ES1s feel dead, the crossover is too low or the sub level is too high.
-
----
-
-## Part 9 — Speaker Placement
-
-The Fluance ES1 towers need correct placement to image properly and avoid early reflections.
-
-### Distance from walls
-
-```
-Front wall (behind speakers):  30–60 cm minimum
-Side walls:                    60 cm minimum
-Between tweeters:              1.8–2.5 m for typical rooms
-```
-
-The ES1 is rear-ported (check the back of the speaker). With rear ports, being too close to the front wall (< 20 cm) boosts and muddies the bass. Move them out.
-
-### Toe-in
-
-Point the speakers toward your listening position. For the ES1's forward/bright tweeter, experiment with:
-- **Moderate toe-in:** tweeters angled toward you. Focused centre image, more treble presence.
-- **Less toe-in:** speakers pointing slightly outward. Wider, airier soundstage, slightly softer treble.
-
-Given the ES1's measured treble brightness, **less toe-in** often sounds more natural.
-
-### Height
-
-The ES1 at 51 inches (130 cm) places the tweeter at roughly ear height for a standing adult, about 10–15 cm above ear height when seated. This is correct — no adjustment needed.
-
-### Equilateral triangle rule
-
-For best stereo imaging, the distance between the two tweeters should equal the distance from each tweeter to your ears. If the speakers are 2m apart, sit approximately 2m from each speaker.
-
-```
-        [Left ES1]  ←—— 2m ——→  [Right ES1]
-               \                 /
-                \               /
-                 \             /
-                  ↓           ↓
-                       2m
-                    [You here]
+Press [RETURN]  →  back to Speaker Setup menu
+Press [RETURN]  →  back to main menu
 ```
 
 ---
 
-## Part 10 — Receiver Audio Settings Reference
-
-All settings, one place, for copy/reference:
+### Step 7 — Turn Off Unnecessary Processing
 
 ```
-SETUP → Speaker Setup:
-  Front speakers (ES1):  Small
-  Crossover:             80 Hz
-  Subwoofer:             Yes
-  LPF for LFE:           120 Hz
-  Center:                None
-  Surround:              None
+Press [▲][▼] to highlight "4. Audio Adjust"
+Press [ENTER]
+```
 
-SETUP → Manual Setup → Levels:
-  Front L:               0 dB (Audyssey calibrated)
-  Front R:               0 dB (Audyssey calibrated)
-  Subwoofer:             0 dB (start here, adjust by ear ±3 dB)
+Navigate with **[▲][▼]**, change with **[◄][►]**:
 
-SETUP → Audio Adjust:
-  Audyssey Dynamic EQ:   Off
-  Audyssey Dynamic Vol:  Off
-  Re-EQ:                 Off
-  Late Night:            Off
-  Bass:                  0 dB (or −2 dB if too boomy)
-  Treble:                −2 to −3 dB (for ES1 brightness) or 0 dB to taste
+| Setting | Set to | Why |
+|---|---|---|
+| Dynamic EQ | **Off** | Boosts bass at low volume — useful for late-night TV, wrong for music |
+| Dynamic Vol | **Off** | Auto volume levelling — kills dynamics in music |
+| Re-EQ | **Off** | Softens harsh movie soundtracks — damages music |
+| Late Night | **Off** | Compresses loud/quiet — useful for neighbours at 1am, wrong for music |
 
-Listening Mode for music: DIRECT
-Listening Mode for casual/background: STEREO
+```
+Press [SETUP]  →  exit all menus
 ```
 
 ---
 
-## Part 11 — Input-by-Input Setup
+### Step 8 — Select Listening Mode
 
-### HDMI input (Le Potato)
+No SETUP menu needed — use these buttons directly:
 
-1. Press **HDMI** input selector → **HDMI 1** (or whichever port Le Potato is connected to)
-2. The Onkyo shows the HDMI signal type on the front display:
-   - `PCM` = correct, lossless stereo from Linux
-   - `DD` or `DTS` = something is wrong, ALSA is outputting compressed audio
-3. If showing DD instead of PCM: restart the shairport-sync and mpd containers, check `asound.conf`
-
-### Optical input (Le Potato SPDIF)
-
-1. Press the input selector assigned to OPTICAL IN 1 (usually **CD** or **DVD**)
-2. Front display should show `PCM 44.1K` or `PCM 48K`
-3. Sampling rate shown corresponds to the music file's sample rate — confirms bit-perfect delivery
-
-### HDMI vs Optical — Audible Difference
-
-For stereo PCM there is **no audible difference** between HDMI and optical on this receiver. Both carry identical digital PCM data. Any claim that one "sounds better" than the other for digital audio is not supported by measurement.
+**To reach Direct:** Press **[LISTENING MODE ►]** repeatedly until display shows `DIRECT`
+**To reach Stereo:** Press the **[STEREO]** button directly
 
 ---
 
-## Part 12 — Common Problems and Fixes
+#### When to use Direct
 
-### Sub is silent during music playback
+Direct disables all EQ and tone controls but keeps bass management fully active (sub gets the bass below 80 Hz). The signal goes from the input to the amplifier with as little processing as possible. This is what you want when the source is already good quality.
 
-**Cause:** Listening mode is Pure Audio or Direct with speakers set to Large.
+Use Direct when:
+- Playing FLAC or ALAC files from MPD → Le Potato → Onkyo (this is the best-quality path you have)
+- Listening via AirPlay 2 from iPhone/iPad
+- Listening via Snapcast from the homelab
+- Doing critical or attentive listening — sitting and actually listening, not background
+- The volume is at 55 or above (loud enough that the ES1 tweeter brightness is not a problem)
+- You are happy with how the ES1s sound — they are not fatiguing you
 
-**Fix:**
-1. Switch to **Direct** mode (press Listening Mode until Direct shows)
-2. Confirm: `SETUP → Speaker Setup → Front = Small, Crossover = 80 Hz`
-3. Sub should now receive bass below 80 Hz
+**What Direct does NOT do:** tone controls, loudness compensation, any EQ. What you hear is what came off the disc/file. If the ES1 tweeter bothers you in this mode, switch to Stereo — it's not a flaw in your setup, just the ES1's character.
 
 ---
 
-### Bass sounds boomy or slow
+#### When to use Stereo
 
-**Causes and fixes:**
+Stereo keeps bass management active (sub works the same as Direct) but also activates tone controls. The only meaningful difference is that you can now use **[TONE –]** to trim the ES1's treble brightness by −2 dB.
+
+Use Stereo when:
+- The ES1s sound harsh, bright, or fatiguing in Direct mode — this is common at higher volumes
+- Playing Spotify Connect (lossy OGG 320 kbps — EQ helps, can't hurt a lossy source)
+- Background music while you're doing something else — you're not critically listening
+- Low volume listening — the ES1 brightness becomes more noticeable at low volumes too
+- Watching something through the Onkyo where treble harshness is distracting
+
+**The difference is subtle.** Both Direct and Stereo have the sub active and at the same levels. The only practical difference: in Stereo you can use [TONE –] to cut treble −2 dB. If you have done that and the ES1s still sound fine in Direct — stay in Direct, it's marginally cleaner.
+
+---
+
+#### Never use Pure Audio
+
+Pure Audio cuts bass management. The sub receives zero signal. The ES1's four 5-inch woofers have to handle all bass including the frequencies they roll off at — they will distort and the sound will be thin. There is no benefit to Pure Audio in a 2.1 setup with the Yamaha sub.
+
+---
+
+### Step 9 — Set Treble Trim (Stereo mode only)
+
+Only needed if using Stereo mode. Tone controls do not exist in Direct mode.
+
+```
+Make sure you are in STEREO mode (press [STEREO] button)
+Press [TONE –] repeatedly
+```
+
+Each press steps treble down 1 dB. **Start at −2 dB** — this compensates for the ES1's measured +3–6 dB treble peak at 5–20 kHz.
+
+- Still too bright → go to −3 dB
+- Sounds dull / lost detail → back to −1 dB
+- **Leave Bass at 0 dB** — sub handles bass. Adding EQ bass on the amp creates a double-boost that muddies the crossover region.
+
+> [TONE –] and [TONE +] only work in **Stereo** mode. They are disabled in Direct and Pure Audio.
+
+---
+
+### Step 10 — Set Sub Phase and Fine-Tune Sub Level
+
+Do this last, after everything else is set. Use **Direct mode** throughout this step. Play music with real bass — bass guitar, upright bass, kick drum. Something you know well. Not synth pads or film scores — you need a reference you already know how it should sound.
+
+---
+
+#### Sub Phase — why it matters and how to set it
+
+The phase switch on the Yamaha sub has two positions: **0°** and **180°**. It controls the timing of when the sub's cone moves relative to the ES1 woofers.
+
+When you play a bass note, both the sub and the ES1s reproduce the crossover region (around 80 Hz). If they are in phase, their cones push air at the same moment — the bass adds up and sounds full. If they are out of phase, one cone pushes while the other pulls — they partially cancel each other out. The result sounds like the sub is barely doing anything, or the bass sounds thin and hollow even though the sub is powered on.
+
+**Wrong phase sounds like:** bass is weak even with sub level high, the sub seems inactive, turning the sub off doesn't make much difference.
+
+**Right phase sounds like:** bass is solid, punchy, full — the sub clearly fills in below what the ES1s do.
+
+**Method 1 — SPL meter (most accurate, do this first):**
+
+The sub and mains overlap at 80 Hz (your crossover point). Measure the combined level there — the position that reads higher means they are adding together.
+
+1. Get a tone generator app on your phone (search "Tone Generator" — many free options)
+2. Set it to generate **80 Hz sine wave**
+3. Play it through the Onkyo at moderate volume in Direct mode (both sub and mains active)
+4. Open SPL meter app — set to **C-weighting, Slow**
+5. Hold phone at your listening position at ear height
+6. Read the SPL with sub phase at **0°** — write it down (e.g. 72 dB)
+7. Flip the phase switch to **180°** — read again (e.g. 68 dB)
+8. **Use whichever position read higher** — in this example 0° wins
+
+If both positions read the same: the sub's position in the room is exactly equidistant from you and the speakers — either phase works. Leave it at 0°.
+
+**Method 2 — By ear (if no tone generator):**
+
+1. Play a track with steady, repetitive bass — same bass note looping is ideal
+2. Switch between 0° and 180° while music plays (you can flip it live)
+3. **Use the position where bass sounds louder, fuller, and more physical** — where you feel it more in your chest
+4. The wrong position will sound noticeably thinner and smaller
+
+**Most common result:** Sub placed near the front wall between or beside the ES1 towers = **0°** is correct. If you placed the sub behind you or way to the side = **180°** may be better.
+
+---
+
+#### Sub Level — fine-tuning by ear
+
+If you used the SPL meter in Step 6 you already have a calibrated starting point (77–78 dB). Now you verify it sounds right with real music. If you skipped the SPL meter, this is where you set the level entirely by ear.
+
+**Open Level Calibration:**
+```
+Press [SETUP]
+Press [▲][▼]  →  "2. Speaker Setup"  →  [ENTER]
+Press [▲][▼]  →  "4. Level Calibration"  →  [ENTER]
+Press [▲][▼]  →  navigate to Subwoofer
+Press [◄][►]  →  adjust level in 1 dB steps
+Press [SETUP]  →  exit when done
+```
+
+**What to listen for — three tests:**
+
+**Test 1 — The localisation test (most important)**
+Close your eyes and play a track with bass. Point to where the bass seems to come from. You should point at the ES1 towers, not at the Yamaha sub. If you can clearly point to a box in the corner, the sub is too loud. Turn it down 2 dB and test again.
+
+**Test 2 — The on/off test**
+Turn the sub off (power switch on the back). Notice the difference — the bottom octave drops away and the ES1s sound thinner. Now turn it back on. The sub should restore the warmth and weight smoothly — it should feel like the speakers just got bigger, not like a separate bass effect was added. If turning the sub on/off feels dramatic and obvious, the sub is too loud.
+
+**Test 3 — Known track test**
+Play a recording you know very well — something you've heard on headphones or other good speakers. Bass guitar, acoustic bass, kick drum. Does the weight in the low end match what you know the recording contains? If the bass seems exaggerated compared to what you know the track sounds like, the sub is too hot. If the track sounds thin, the sub needs more.
+
+**Adjustment guide:**
+- Sub too loud: bass sounds boomy, one-note, has its own character, you know where it is → reduce 2 dB at a time
+- Sub too quiet: music sounds thin, no weight, no physical presence → add 1 dB at a time
+- Correct: bass is full and seamless, sounds like it comes from the direction of the ES1s, adding or removing 1 dB makes you feel like something small is missing or overcooked
+
+**Typical result:** If you SPL-calibrated correctly to +2–3 dB, you may need 0–1 dB of adjustment either way. The SPL meter gets you 90% there — the ear gets the last 10%.
+
+---
+
+## You're Done — What to Press Every Day
+
+```
+Power on:       [STANDBY/ON]
+Select input:   [DVD] for HDMI 1 (Le Potato)
+Volume:         [MASTER VOLUME] knob
+Listening mode: [LISTENING MODE ►] → DIRECT   (serious music)
+                [STEREO] button                (casual / background)
+Sub power:      switch on back of Yamaha sub (no auto-on)
+```
+
+---
+
+## All Settings at a Glance
+
+```
+── Speaker Config ──────────────────────────────
+  Subwoofer:    Yes
+  Front (ES1):  80 Hz
+  Center:       None
+  Surround:     None
+  Surr Back:    None
+  LPF of LFE:   120 Hz
+  Double Bass:  Off
+
+── Speaker Distance ────────────────────────────
+  Front L/R:    tape-measured to nearest 0.3 m
+  Subwoofer:    tape-measured to nearest 0.3 m
+
+── Level Calibration ───────────────────────────
+  Front L:      75 dB C-weighted Slow
+  Front R:      75 dB C-weighted Slow
+  Subwoofer:    77–78 dB (= +2 to +3 dB above mains)
+
+── Audio Adjust ────────────────────────────────
+  Dynamic EQ:   Off
+  Dynamic Vol:  Off
+  Re-EQ:        Off
+  Late Night:   Off
+
+── Tone Controls (Stereo mode only) ────────────
+  Treble:       −2 dB  (ES1 brightness fix)
+  Bass:         0 dB   (never add bass EQ — sub handles it)
+
+── Listening Modes ─────────────────────────────
+  Serious music:   Direct
+  Casual/BG:       Stereo
+
+── Yamaha Sub ──────────────────────────────────
+  Volume knob:     50–60% (calibrated via receiver)
+  Crossover knob:  MAX
+  Phase:           0° or 180° (whichever reads higher dB at 80 Hz)
+
+── ES1 Placement ───────────────────────────────
+  Back wall:       60–90 cm minimum
+  Toe-in:          22–30° toward listening seat
+```
+
+---
+
+## Listening Modes Reference
+
+### DIRECT — serious / attentive listening
+
+Press **[LISTENING MODE ►]** until display shows `DIRECT`.
+
+What it does:
+- Sub active (bass below 80 Hz goes to Yamaha sub) ✓
+- No EQ, no tone controls, no loudness compensation — signal is clean
+- Distance and level calibration from Step 5/6 still applied ✓
+- HDMI video output stays active ✓
+
+Use it for: FLAC/ALAC from MPD, AirPlay 2, Snapcast, any attentive listening session.
+Avoid it if: the ES1 tweeter is fatiguing you — switch to Stereo and use [TONE –].
+
+### STEREO — casual / background / Spotify / loud volumes
+
+Press **[STEREO]** button.
+
+What it does:
+- Sub active (same as Direct) ✓
+- Tone controls enabled → use [TONE –] to set Treble −2 dB
+- All other processing (Dynamic EQ, Re-EQ, etc.) stays off because you turned those off in Step 7
+
+Use it for: background music, Spotify, anything where the ES1 brightness is bothering you, high-volume sessions where the tweeter peak is fatiguing.
+
+The sub works identically in both Direct and Stereo. The only functional difference is tone controls.
+
+### PURE AUDIO — never use with this setup
+
+Sub receives zero signal with stereo sources. ES1s play full range and run out of bass extension below 80 Hz. Do not use.
+
+---
+
+## Troubleshooting
+
+### Sub is completely silent
+
+1. Check listening mode — press **[LISTENING MODE ►]** until `DIRECT` (not Pure Audio)
+2. Check Speaker Config: `SETUP → 2. Speaker Setup → 2. Speaker Config` → Subwoofer = **Yes**, Front = **80 Hz** (not Full Band)
+3. Check RCA cable: plugged into Onkyo **SUBWOOFER PRE OUT** and sub **LINE IN**?
+4. Check sub power switch is ON
+
+### Bass is boomy or slow
 
 | Cause | Fix |
 |---|---|
-| Sub crossover too high | Lower from 120 Hz to 80 Hz (already done above) |
-| Sub too close to corner | Move sub away from corner by 10–20 cm and re-test |
-| Sub level too loud | Reduce sub level in Onkyo Manual Setup by 2–3 dB |
-| Phase wrong | Toggle sub's phase switch 0°/180° |
-| Floor resonance | Try an isolation platform under the sub |
-
----
+| Phase wrong | Flip sub Phase 0° ↔ 180°, pick position that sounds fuller |
+| Sub too close to corner | Move sub 10–20 cm away from corner |
+| Sub level too high | `SETUP → Speaker Setup → Level Calibration` → lower Subwoofer 2–3 dB |
+| Crossover too high | Confirm Front crossover = 80 Hz, not 120 or 150 Hz |
 
 ### Treble is harsh or fatiguing
 
-**Cause:** Fluance ES1 has a measured 3–6 dB treble peak.
+1. Press **[STEREO]** — enables tone controls
+2. Press **[TONE –]** twice → Treble = −2 dB
+3. If still bright: angle ES1s slightly away from you (reduce toe-in by 5°)
 
-**Fixes (try in order):**
-1. Switch from **Direct** to **Stereo** — Audyssey EQ corrects the peak
-2. In Stereo mode: `Audio Adjust → Treble → −2 dB`
-3. Reduce toe-in (angle speakers slightly away from listening position)
-4. Check listening volume — the ES1 tweeter becomes more prominent at high SPL
+### "NO SIGNAL" on optical input
 
----
+```
+Press [DIGITAL INPUT] → press [◄][►] → select OPT 1 (or OPT 2)
+```
+Also check:
+- TOSLINK cable clicked fully in at both ends (you should feel a click)
+- On Le Potato: `amixer sset "AIU SPDIF SRC SEL" I2S`
 
-### Onkyo front display shows "NO SIGNAL" on optical
+### Display shows DD or DTS instead of PCM
 
-**Causes:**
-- SPDIF overlay not enabled on Le Potato (`sudo ldto merge spdif`)
-- ALSA source not routed to SPDIF (`amixer sset "AIU SPDIF SRC SEL" I2S`)
-- TOSLINK cable not clicked in fully (click = connected)
-- TOSLINK transmitter module not powered (check 5V wire connection on 9J1)
-
----
-
-### Onkyo shows signal but Onkyo display shows DD or DTS instead of PCM
-
-Le Potato is sending compressed audio instead of raw PCM.
-
-**Fix:**
+Le Potato is sending compressed audio. Fix:
 ```bash
-# On Le Potato — restart audio containers:
 cd ~/music-potato
 docker compose restart shairport-sync mpd spotifyd
-
-# Check ALSA output format:
-aplay -l
-# Should show: card 0: amlaugesound — not a compressed format device
 ```
 
----
+### Sub and mains sound disconnected (two separate sources)
 
-### Sub and speakers sound disconnected (two separate sound sources)
+1. Flip sub Phase 0° ↔ 180°
+2. Try crossover at 100 Hz instead of 80 Hz
+3. Move sub physically closer to the ES1 towers
 
-**Cause:** Crossover frequency mismatch or phase issue.
+### Volume low even at 80+
 
-**Fixes:**
-1. Toggle phase switch on sub (0° ↔ 180°)
-2. Try crossover at 100 Hz instead of 80 Hz (helps if ES1 rolls off higher than rated)
-3. Move sub closer to the Fluance ES1 towers (reduces time-delay between sub and mains)
-
----
-
-### Volume is low even at 80/100 on dial
-
-**Cause:** Input level trim is set too low, or sub level is reducing perceived loudness.
-
-**Fix:** `SETUP → Manual Setup → Levels` — increase Front L/R level by +2 to +3 dB. Do not confuse input level with master volume.
-
----
-
-## Part 13 — Long-Term Tips
-
-### Re-run Audyssey after moving furniture
-Significant room changes (large sofa moved, new curtains, shelves added) affect reflections. Re-run Audyssey to update EQ and level calibration.
-
-### Sub auto-power hack
-The YST-FSW050 has no auto-on. Put it on a smart plug linked to the Onkyo (via Home Assistant or a simple switched outlet strip). Power it on whenever the Onkyo powers on.
-
-### Reference level listening
-The Onkyo's volume dial is uncalibrated. For a meaningful reference volume (THX/Dolby reference = 0 dBFS input plays back at 85 dB SPL at the listening position), you need a calibrated SPL meter. This matters if you want consistent loudness between sessions or if you're calibrating EQ precisely. For casual listening it's not needed.
-
-### ES1 break-in
-New Fluance ES1 towers sound slightly stiff in the woofer suspension. After 20–40 hours of use the woofers loosen up and bass becomes fuller and less constrained. If the bass sounds thin in the first week, give them time.
-
-### YST-FSW050 limitations
-This is a compact sub with a 6.5-inch driver. It will not produce sub-bass (below 35 Hz) at high SPL. For electronic music or home theater bass below 35 Hz, the YST-FSW050 will compress before the Onkyo does. This is a physical limitation of the driver size — not a settings problem.
-
----
-
-## Quick Reference
-
-```
-Onkyo volume for casual listening:     40–55
-Onkyo volume for serious listening:    60–75
-Onkyo volume reference (loud):         80–85
-
-Listening mode:    Direct (music) / Stereo (background)
-Crossover:         80 Hz
-Sub level:         0 dB (adjust ±3 dB by ear)
-Sub phase:         0° (try 180° if bass sounds thin)
-Sub knob:          MAX (Onkyo controls crossover)
-ES1 setting:       Small
-Treble:            −2 dB (in Stereo mode only)
-Re-EQ:             Off
-Dynamic EQ:        Off
-Late Night:        Off
-
-Best source for lossless:    MPD → Direct mode → PCM 44.1/96 kHz displayed
-Best source for Apple Music: AirPlay 2 → Direct mode → PCM 48 kHz displayed
-```
+`SETUP → Speaker Setup → Level Calibration` → raise Front L and Front R by +2 to +3 dB.
 
 ---
 
 ## Sources
 
-- [Fluance ES1 Tower Review — Audioholics](https://www.audioholics.com/tower-speaker-reviews/fluance-es1)
+- [Fluance ES1 Tower Review + Measurements — Audioholics](https://www.audioholics.com/tower-speaker-reviews/fluance-es1)
+- [Fluance ES1 Measurement & Analysis — Audioholics](https://www.audioholics.com/surround-sound-reviews/fluance-es1-surrounds/measurement-and-analysis)
 - [Yamaha YST-FSW050 Specs — Yamaha USA](https://usa.yamaha.com/products/audio_visual/speaker_systems/yst-fsw050/specs.html)
-- [Onkyo TX-SR605 Listening Modes Explained — AVS Forum](https://www.avsforum.com/threads/onkyo-tx-sr605-705-805-listening-modes-explained-purposes-and-benefits.1008717/)
-- [Onkyo TX-SR605 Speaker Setup — Home Theater Forum](https://www.hometheaterforum.com/community/threads/best-speaker-setup-for-an-onkyo-tx-sr605.285265/)
-- [Onkyo TX-SR605 + Subwoofer Setup — AVForums](https://www.avforums.com/threads/onkyo-tx-sr605-and-sub-setup.1412589/)
-- [Audyssey Setup Guide — Simple Home Cinema](https://simplehomecinema.com/2021/06/16/configuring-audyssey-the-right-way/)
-- [Subwoofer Crossover Tips — SVS Sound](https://www.svsound.com/blogs/subwoofer-setup-and-tuning/tips-for-setting-the-proper-crossover-frequency-for-a-subwoofer)
+- [Subwoofer Calibration & Bass Preferences Guide — AVS Forum](https://www.avsforum.com/threads/guide-to-subwoofer-calibration-and-bass-preferences.2958528/)
+- [How to Manually Level Match Speakers — Audioholics](https://www.audioholics.com/frequent-questions/how-to-manually-level-match-speakers)
+- [Onkyo TX-SR605 Listening Modes — AVS Forum](https://www.avsforum.com/threads/onkyo-tx-sr605-705-805-listening-modes-explained-purposes-and-benefits.1008717/)
 - [Onkyo TX-SR605 Full Manual — ManualsLib](https://www.manualslib.com/manual/302297/Onkyo-Tx-Sr605.html)
+- [Subwoofer Crossover Tips — SVS Sound](https://www.svsound.com/blogs/subwoofer-setup-and-tuning/tips-for-setting-the-proper-crossover-frequency-for-a-subwoofer)
+- [Speaker Wall Distance Guide — Fluance Support](https://support.fluance.com/s/article/How-far-should-my-speakers-be-from-the-wall)
+- [How to Toe-In Speakers Correctly — Totem Acoustic](https://totemacoustic.com/how-to-properly-toe-in-your-speakers-for-optimal-sound/)

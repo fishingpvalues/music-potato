@@ -114,6 +114,7 @@ services:
       MPD_HOST: "127.0.0.1"                  # localhost — host network mode
       MPD_PORT: "6600"
       FRIENDLY_NAME: "${DEVICE_NAME:-music-potato}"
+      UPNPIFACE: "wlx90de8055c7e3"           # advertise UPnP on WiFi so Android clients can discover
       SUBSONIC_ENABLE: "${SUBSONIC_ENABLE:-yes}"
       SUBSONIC_BASE_URL: "${NAVIDROME_URL:-http://192.168.1.100:4533}"
       SUBSONIC_PORT: "4533"
@@ -130,28 +131,6 @@ services:
       timeout: 5s
       retries: 3
 
-  # ── Spotify Connect (spotifyd) ───────────────────────────────────────────────
-  # Appears as a speaker in the Spotify app — any device on the same WiFi.
-  # NOTE: Spotify = OGG Vorbis 320kbps always. Inherently lossy.
-  # For lossless Spotify: use SpotiFLAC downloads on homelab → play via MPD.
-  spotifyd:
-    build:
-      context: .
-      dockerfile: Dockerfile.spotifyd   # ghcr.io/spotifyd/spotifyd requires auth; build locally from release binary
-    container_name: spotifyd
-    network_mode: host
-    <<: [*audio, *restart]
-    volumes:
-      - ./config/spotifyd.conf:/etc/spotifyd/spotifyd.conf:ro
-      - /etc/asound.conf:/etc/asound.conf:ro
-      - spotifyd-cache:/var/cache/spotifyd
-    environment:
-      TZ: ${TZ:-Europe/Berlin}
-    healthcheck:
-      test: ["CMD-SHELL", "ls /proc/1/exe 2>/dev/null"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
 
   # ── Avahi: runs at SYSTEM LEVEL (not Docker) ─────────────────────────────────
   # install.sh installs avahi-daemon + libnss-mdns at system level and enables it.
@@ -278,7 +257,5 @@ volumes:
     name: music-potato-mpd-state
   upmpdcli-cache:
     name: music-potato-upmpdcli-cache
-  spotifyd-cache:
-    name: music-potato-spotifyd-cache
   tailscale-state:
     name: music-potato-tailscale-state

@@ -155,7 +155,8 @@ apt-get install -y -qq \
   alsa-utils \
   pipewire pipewire-audio-client-libraries pipewire-pulse pipewire-alsa \
   wireplumber libspa-0.2-bluetooth \
-  bluez bluez-tools bluetooth \
+  bluez bluez-tools bluetooth bluez-alsa-utils \
+  python3-dbus python3-gi \
   avahi-daemon avahi-utils libnss-mdns \
   nfs-common
 ok "Packages installed"
@@ -474,28 +475,74 @@ if ! grep -q "mdns4_minimal" /etc/nsswitch.conf; then
   sed -i 's/^hosts:.*/hosts:          files mdns4_minimal [NOTFOUND=return] dns/' /etc/nsswitch.conf
 fi
 systemctl enable --now avahi-daemon
-ok "Avahi (mDNS): ${DEVICE_NAME}.local resolvable on LAN"
+# Restrict Avahi to LAN interfaces — prevents Docker bridge IPs from polluting mDNS responses
+IFACES=$(ip -o link show | awk -F': ' '/^[0-9]+: /{print $2}' | grep -vE '^(lo|docker|br-|veth|tailscale)')
+IFACE_LIST=$(echo "$IFACES" | tr '\n' ',' | sed 's/,$//')
+sed -i "s|#allow-interfaces=eth0|allow-interfaces=${IFACE_LIST}|" /etc/avahi/avahi-daemon.conf
+systemctl restart avahi-daemon
+ok "Avahi (mDNS): ${DEVICE_NAME}.local resolvable on LAN (interfaces: ${IFACE_LIST})"
 
 # Allow headless user session (PipeWire + BT need this)
 loginctl enable-linger "${INSTALL_USER}"
 ok "User lingering enabled for ${INSTALL_USER}"
 
 # Bluetooth: always on, always discoverable, A2DP sink
+# NOTE: Discoverable/Pairable are unknown keys in BlueZ 5.66+ — set at runtime via bt-agent instead
 cat > /etc/bluetooth/main.conf << EOF
 [Policy]
 AutoEnable=true
 
 [General]
 Name=${DEVICE_NAME}
-Class=0x200414
+Class=0x240404
 DiscoverableTimeout=0
-Discoverable=true
-Pairable=true
 FastConnectable=true
 EOF
 systemctl enable bluetooth
 systemctl restart bluetooth || true
-ok "Bluetooth: A2DP sink, always discoverable as '${DEVICE_NAME}'"
+
+# bluealsa A2DP sink — aptX-HD, aptX, FastStream, Opus, SBC (best quality without LDAC)
+mkdir -p /etc/systemd/system/bluealsa.service.d
+cat > /etc/systemd/system/bluealsa.service.d/override.conf << 'OVERRIDE'
+[Service]
+ExecStart=
+ExecStart=/usr/bin/bluealsa -S --keep-alive=5 -p a2dp-sink --codec=SBC --codec=aptX --codec=aptX-HD --codec=FastStream --codec=Opus
+OVERRIDE
+
+# bluealsa-aplay — route received Bluetooth audio to dmixed ALSA (allows mixing with MPD)
+mkdir -p /etc/systemd/system/bluealsa-aplay.service.d
+cat > /etc/systemd/system/bluealsa-aplay.service.d/override.conf << 'OVERRIDE'
+[Service]
+ExecStart=
+ExecStart=/usr/bin/bluealsa-aplay -S --pcm=dmixed --profile-a2dp
+OVERRIDE
+
+# Python D-Bus agent — auto-accepts all pairing (no PIN needed), auto-trusts paired devices
+cp "${SCRIPT_DIR}/etc/bt-auto-agent.py" /usr/local/bin/bt-auto-agent.py
+chmod +x /usr/local/bin/bt-auto-agent.py
+cat > /etc/systemd/system/bt-agent.service << 'SVC'
+[Unit]
+Description=Bluetooth auto-accept pairing agent
+After=bluetooth.service bluealsa.service
+Wants=bluetooth.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /usr/local/bin/bt-auto-agent.py
+ExecStartPost=/usr/bin/bluetoothctl -- discoverable on
+ExecStartPost=/usr/bin/bluetoothctl -- pairable on
+StandardOutput=journal
+StandardError=journal
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=bluetooth.target
+SVC
+
+systemctl daemon-reload
+systemctl enable --now bluealsa bluealsa-aplay bt-agent
+ok "Bluetooth: A2DP sink ready (aptX-HD/aptX/SBC), always discoverable as '${DEVICE_NAME}'"
 
 # ALSA — unmute card 0, configure default device
 amixer -c 0 sset Master 100% unmute 2>/dev/null \
